@@ -148,6 +148,11 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
 
 }
 
+Atlas* System::getAtlas()
+{
+    return mpAtlas;
+}
+
 cv::Mat System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const double &timestamp, const vector<IMU::Point>& vImuMeas, string filename)
 {
     if(mSensor!=STEREO && mSensor!=IMU_STEREO)

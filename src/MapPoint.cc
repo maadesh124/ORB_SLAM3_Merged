@@ -134,6 +134,12 @@ cv::Mat MapPoint::GetWorldPos()
     return mWorldPos.clone();
 }
 
+Eigen::Vector3f MapPoint::GetWorldPosEigen()
+{
+    unique_lock<mutex> lock(mMutexPos);
+    return Eigen::Vector3f(mWorldPos.at<float>(0), mWorldPos.at<float>(1), mWorldPos.at<float>(2));
+}
+
 cv::Mat MapPoint::GetNormal()
 {
     unique_lock<mutex> lock(mMutexPos);

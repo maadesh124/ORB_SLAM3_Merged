@@ -8,7 +8,7 @@ std::vector<Eigen::Vector3f> Anchor::getRefPositions(){
     vector<MapPoint*> vMp=this->refs;
     std::vector<Eigen::Vector3f> vPos;
     for(MapPoint* mp:vMp){
-        Eigen::Vector3f t1=mp->GetWorldPos();
+        Eigen::Vector3f t1=mp->GetWorldPosEigen();
        // Eigen::Vector3f t2(t1[0],t1[1],t1[2]);
         vPos.push_back(t1);
     }
@@ -78,7 +78,7 @@ double wi=1,swi=0;
 Eigen::Vector3f c(0,0,0);
 for(Eigen::Vector3f pp:this->prevRefPos){
     wi=1/(pp-this->pos).norm();
-    Eigen::Vector3f cp=this->refs.at(i)->GetWorldPos();
+    Eigen::Vector3f cp=this->refs.at(i)->GetWorldPosEigen();
     Eigen::Vector3f ci=pp-this->pos-cp;
     c=c+(wi*ci);
     swi=swi+wi;
@@ -94,7 +94,7 @@ std::vector<Eigen::Vector3f> curPos;
 i=0;
 for(Eigen::Vector3f pp:this->prevRefPos){
     alignment.push_back(this->ori*(this->pos-pp).normalized());
-    curPos.push_back((this->pos-this->refs.at(i)->GetWorldPos()).normalized());
+    curPos.push_back((this->pos-this->refs.at(i)->GetWorldPosEigen()).normalized());
     i++;
 }
 
@@ -128,7 +128,7 @@ for(Eigen::Vector3f pp:this->prevRefPos){
 
     pp=pp.normalized();
     alignment.push_back(this->ori*pp);
-    curPos.push_back(this->refs.at(i)->GetWorldPos().normalized());
+    curPos.push_back(this->refs.at(i)->GetWorldPosEigen().normalized());
    i++; 
 }
 Eigen::Matrix3f R=solveOrthogonalProcrustes(curPos,alignment);

@@ -280,7 +280,7 @@ void Viewer::Run()
                 Eigen::Matrix3f objO=Eigen::Matrix3f::Identity();
 
              Anchor* te= mpMapDrawer->mpAtlas->GetCurrentMap()->createAnchor(&pos,&ori);
-              std::string path = "/home/samsung/Dev/Test/build/models/model.obj";
+              std::string path = "/home/stemtec/Dev/saveload_orbslam_3/models/Car.obj";
               mpMapDrawer->mpAtlas->GetCurrentMap()->createObject(&objP,&objO,te,path,0.2f);
         }
         prevShowCube=menuShowCube;
@@ -288,7 +288,7 @@ void Viewer::Run()
 
 
         d_cam.Activate(s_cam);
-        glClearColor(1.0f,1.0f,1.0f,1.0f);
+        glClearColor(0.0f,1.0f,1.0f,1.0f);
         mpMapDrawer->DrawCurrentCamera(Twc);
         if(menuShowKeyFrames || menuShowGraph || menuShowInertialGraph)
             mpMapDrawer->DrawKeyFrames(menuShowKeyFrames,menuShowGraph, menuShowInertialGraph);
@@ -302,7 +302,7 @@ void Viewer::Run()
         //End
         pangolin::FinishFrame();
 
-        mpFrameDrawer->DrawImageAndObjects(trackedImageScale);
+        //mpFrameDrawer->DrawImageAndObjects(trackedImageScale);
         cv::Mat toShow;
         cv::Mat im = mpFrameDrawer->DrawFrame(true);
 
@@ -314,6 +314,7 @@ void Viewer::Run()
             toShow = im;
         }
 
+        //cout<<"rows=%d cols=%d"<<toShow.rows<<toShow.cols<<endl;
         cv::imshow("ORB-SLAM3: Current Frame",toShow);
         cv::waitKey(mT);
 

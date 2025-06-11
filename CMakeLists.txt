@@ -44,21 +44,20 @@ include_directories(
   ${PROJECT_SOURCE_DIR}
   ${PROJECT_SOURCE_DIR}/include
   ${PROJECT_SOURCE_DIR}/include/CameraModels
-  ${PROJECT_SOURCE_DIR}/Thirdparty/Sophus
   ${EIGEN3_INCLUDE_DIR}
-  ${Pangolin_INCLUDE_DIRS}
   ${PROJECT_SOURCE_DIR}/../Pangolin
+  ${Pangolin_INCLUDE_DIRS}
 )
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 
 # Source files
 add_library(${PROJECT_NAME} SHARED
-  src/System.cc
   src/Anchor.cc
   src/Object.cc
   src/Global.cc
   src/shaders.cc
+  src/System.cc
   src/Tracking.cc
   src/LocalMapping.cc
   src/LoopClosing.cc
@@ -84,11 +83,12 @@ add_library(${PROJECT_NAME} SHARED
   src/OptimizableTypes.cpp
   src/MLPnPsolver.cpp
   src/TwoViewReconstruction.cc
-  include/System.h
+  
   include/Anchor.h
   include/Object.h
   include/Global.h
   include/shaders.h
+  include/System.h
   include/Tracking.h
   include/LocalMapping.h
   include/LoopClosing.h

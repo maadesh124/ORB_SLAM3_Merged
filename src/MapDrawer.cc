@@ -104,7 +104,7 @@ void MapDrawer::DrawObjects( pangolin::GlSlProgram& shader ,pangolin::OpenGlMatr
     shader.Bind();
     for(Object* object:curMap->objects)
     {
-        cout<<"Object rendered in mp drawer"<<i++<<endl;
+        //cout<<"Object rendered in mp drawer"<<i++<<endl;
         Eigen::Matrix3f globOri=object->anchor->ori*object->ori;
         Eigen::Vector3f globPos=object->pos + object->anchor->pos;
         model=Global::ToOpenGlMatrix(model,globOri,globPos);

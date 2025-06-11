@@ -32,13 +32,22 @@ namespace ORB_SLAM3
 Object* ob;
 
 FrameDrawer::FrameDrawer(Atlas* pAtlas):both(false),mpAtlas(pAtlas)
-{
-    initialized=false;
-    mState=Tracking::SYSTEM_NOT_READY;
-    mIm = cv::Mat(480,640,CV_8UC3, cv::Scalar(0,0,0));
-    mImRight = cv::Mat(480,640,CV_8UC3, cv::Scalar(0,0,0));
-}
 
+{
+
+
+    initialized=false;
+
+    mState=Tracking::SYSTEM_NOT_READY;
+
+    mIm = cv::Mat(600,350,CV_8UC3, cv::Scalar(0,0,0));
+
+    mImRight = cv::Mat(600,350,CV_8UC3, cv::Scalar(0,0,0));
+
+
+    
+
+}
 
 void PrintOpenGlMatrix(const pangolin::OpenGlMatrix& mat) {
     std::cout << "OpenGlMatrix:" << std::endl;
