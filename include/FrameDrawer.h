@@ -61,6 +61,7 @@ public:
     cv::Mat ConvertToRGB(const cv::Mat& im);
     void DrawObjects( );
     void DrawImageAndObjects(float scale);
+    
 
     // Update info from the last processed frame.
     void Update(Tracking *pTracker);

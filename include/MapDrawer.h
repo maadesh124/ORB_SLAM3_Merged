@@ -41,7 +41,8 @@ public:
     void DrawReferenceAxes();
     void DrawAnchors();
     void DrawObjects( pangolin::GlSlProgram& shader ,pangolin::OpenGlMatrix view,pangolin::OpenGlMatrix proj);
- 
+    void DrawCubes();
+    
     void DrawMapPoints();
     void DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const bool bDrawInertialGraph);
     void DrawCurrentCamera(pangolin::OpenGlMatrix &Twc);

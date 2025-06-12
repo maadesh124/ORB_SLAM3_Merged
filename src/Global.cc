@@ -26,4 +26,14 @@ namespace Global
 
         return M;
     }
+
+    void PrintOpenGlMatrix(const pangolin::OpenGlMatrix& mat) {
+    std::cout << "OpenGlMatrix:" << std::endl;
+    for(int row = 0; row < 4; ++row) {
+        for(int col = 0; col < 4; ++col) {
+            std::cout << mat.m[col * 4 + row] << " ";
+        }
+        std::cout << std::endl;
+    }
+    }
 }

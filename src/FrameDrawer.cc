@@ -18,6 +18,7 @@
 
 #include "FrameDrawer.h"
 #include "Tracking.h"
+#include "Global.h"
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -28,15 +29,7 @@ namespace ORB_SLAM3
 {
  Object* ob;
 
-void PrintOpenGlMatrix(const pangolin::OpenGlMatrix& mat) {
-    std::cout << "OpenGlMatrix:" << std::endl;
-    for(int row = 0; row < 4; ++row) {
-        for(int col = 0; col < 4; ++col) {
-            std::cout << mat.m[col * 4 + row] << " ";
-        }
-        std::cout << std::endl;
-    }
-}
+
 
 FrameDrawer::FrameDrawer(Atlas* pAtlas):both(false),mpAtlas(pAtlas)
 {

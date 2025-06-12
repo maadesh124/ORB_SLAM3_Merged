@@ -91,7 +91,7 @@ public:
 	    std::vector<MapPoint*> selectReferences(Eigen::Vector3f* pos);
         std::vector<Object*> objects;
         Object* createObject(Eigen::Vector3f* pos,Eigen::Matrix3f* orientation,Anchor *anchor,std::string filepath,float scaleFactor);
-
+        Object* createCube(Eigen::Vector3f* pos,Eigen::Matrix3f* orientation,Anchor *anchor,float scaleFactor);
     void AddKeyFrame(KeyFrame* pKF);
     void AddMapPoint(MapPoint* pMP);
     void EraseMapPoint(MapPoint* pMP);

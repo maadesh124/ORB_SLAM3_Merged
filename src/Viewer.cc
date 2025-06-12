@@ -19,6 +19,7 @@
 
 #include "Viewer.h"
 #include "shaders.h"
+#include "Global.h"
 #include "Object.h"
 #include <pangolin/pangolin.h>
 
@@ -211,6 +212,7 @@ void Viewer::Run()
                 s_cam.Follow(Twc);
             else
                 s_cam.Follow(Ow);
+           
         }
         else if(menuFollowCamera && !bFollow)
         {
@@ -226,6 +228,8 @@ void Viewer::Run()
                 s_cam.SetModelViewMatrix(pangolin::ModelViewLookAt(0,0.01,10, 0,0,0,0.0,0.0, 1.0));
                 s_cam.Follow(Ow);
             }
+
+            
             bFollow = true;
         }
         else if(!menuFollowCamera && bFollow)
@@ -240,6 +244,7 @@ void Viewer::Run()
             s_cam.SetProjectionMatrix(pangolin::ProjectionMatrix(1024,768,mViewpointF,mViewpointF,512,389,0.1,10000));
             s_cam.SetModelViewMatrix(pangolin::ModelViewLookAt(mViewpointX,mViewpointY,mViewpointZ, 0,0,0,0.0,-1.0, 0.0));
             s_cam.Follow(Twc);
+            
         }
 
         if(menuTopView && mpMapDrawer->mpAtlas->isImuInitialized())
@@ -249,6 +254,7 @@ void Viewer::Run()
             s_cam.SetProjectionMatrix(pangolin::ProjectionMatrix(1024,768,3000,3000,512,389,0.1,10000));
             s_cam.SetModelViewMatrix(pangolin::ModelViewLookAt(0,0.01,50, 0,0,0,0.0,0.0, 1.0));
             s_cam.Follow(Ow);
+            
         }
 
         if(menuLocalizationMode && !bLocalizationMode)
@@ -265,14 +271,14 @@ void Viewer::Run()
 
         if(menuShowCube && !prevShowCube)
         {
-                 Eigen::Vector3f pos(1.0f, 0.7f, 0.5f);
+                Eigen::Vector3f pos(1.0f, 0.7f, 0.5f);
                 Eigen::Matrix3f ori=Eigen::Matrix3f::Identity();
                 Eigen::Vector3f objP(0.0f, 0.0f, 0.0f);
                 Eigen::Matrix3f objO=Eigen::Matrix3f::Identity();
 
              Anchor* te= mpMapDrawer->mpAtlas->GetCurrentMap()->createAnchor(&pos,&ori);
-              std::string path = "/home/stemtec/Dev/saveload_orbslam_3/models/Car.obj";
-              mpMapDrawer->mpAtlas->GetCurrentMap()->createObject(&objP,&objO,te,path,0.2f);
+             Object* cube=mpMapDrawer->mpAtlas->GetCurrentMap()->createCube(&objP,&objO,te,0.5);
+            
         }
         prevShowCube=menuShowCube;
 
@@ -284,14 +290,12 @@ void Viewer::Run()
         if(menuShowPoints)
             mpMapDrawer->DrawMapPoints();
 
-            glClearColor(0.0f, 1.0f, 0.6f, 1.0f);
-            mpMapDrawer->DrawReferenceAxes();
-        //Extended
-        mpMapDrawer->DrawAnchors();
-        mpMapDrawer->DrawObjects(shader,s_cam.GetModelViewMatrix(),s_cam.GetProjectionMatrix());
-
-        //end
-
+       glClearColor(0.0f, 1.0f, 0.6f, 1.0f);     
+        mpMapDrawer->DrawReferenceAxes();
+        mpMapDrawer->DrawAnchors();      
+        mpMapDrawer->DrawCubes();
+        
+        //mpMapDrawer->DrawObjects(shader,s_cam.GetModelViewMatrix(),s_cam.GetProjectionMatrix());
         pangolin::FinishFrame();
 
          //Extended

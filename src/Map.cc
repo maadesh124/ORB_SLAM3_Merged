@@ -70,6 +70,22 @@ Anchor* Map::createAnchor(Eigen::Vector3f* pos,Eigen::Matrix3f* orientation){
     return anchor;
 }
 
+Object* Map::createCube(Eigen::Vector3f* pos,Eigen::Matrix3f* orientation,Anchor* anchor,float scaleFactor)
+{
+    Object* object=new Object();
+    object->pos=*pos;
+    object->ori=*orientation;
+    object->map=this;
+    object->objectId=objects.size();
+    objects.push_back(object);
+    object->anchor=anchor;
+    object->scaleFactor=scaleFactor;
+    std::cout<<" Object loaded successfully at "<<object->pos[0]<<object->pos[1]<<object->pos[2]<<"relative to anchor"<<endl;
+
+    
+    return object;
+}
+
 
 Object* Map::createObject(Eigen::Vector3f* pos,Eigen::Matrix3f* orientation,Anchor* anchor,std::string filepath,float scaleFactor){
     Object* object=new Object();

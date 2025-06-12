@@ -91,6 +91,7 @@ void MapDrawer::DrawAnchors()
 {
     pangolin::BindToContext(Global::mapWindow);
     Map* curMap=mpAtlas->GetCurrentMap();
+    glPushMatrix();
     for(Anchor* anchor:curMap->anchors)
     {
     glLineWidth(2.0f); // Set the line width
@@ -122,10 +123,32 @@ void MapDrawer::DrawAnchors()
 
     }
 
+    glPopMatrix();
+
    
 }
 
+void MapDrawer::DrawCubes()
+{
+    cout<<" no. of objects"<<mpAtlas->GetCurrentMap()->objects.size()<<endl;
+        for(Object* object: mpAtlas->GetCurrentMap()->objects)
+        {
+        pangolin::OpenGlMatrix model;
+        Eigen::Matrix3f globOri=object->anchor->ori*object->ori;
+        Eigen::Vector3f globPos=object->pos + object->anchor->pos;
+        model=Global::ToOpenGlMatrix(model,globOri,globPos);
 
+        model.m[0] *= object->scaleFactor; // scale X
+        model.m[5] *= object->scaleFactor; // scale Y
+        model.m[10] *= object->scaleFactor; // scale Z
+
+        glPushMatrix();
+        glMultMatrixd(model.m);
+        pangolin::glDrawColouredCube();
+        glPopMatrix();
+
+        }
+}
 
 void MapDrawer::DrawObjects( pangolin::GlSlProgram& shader ,pangolin::OpenGlMatrix view,pangolin::OpenGlMatrix proj)
 {
@@ -160,6 +183,7 @@ void MapDrawer::DrawObjects( pangolin::GlSlProgram& shader ,pangolin::OpenGlMatr
     }
     shader.Unbind();
 }
+
 
 
 
