@@ -200,6 +200,7 @@ void Viewer::Run()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         mpMapDrawer->GetCurrentOpenGLCameraMatrix(Twc,Ow,Twwp);
+ 
 
         if(mbStopTrack)
         {
@@ -271,8 +272,13 @@ void Viewer::Run()
 
         if(menuShowCube && !prevShowCube)
         {
-                Eigen::Vector3f pos(1.0f, 0.7f, 0.5f);
-                Eigen::Matrix3f ori=Eigen::Matrix3f::Identity();
+                Eigen::Vector3f pos;
+                Eigen::Matrix3f ori;
+
+                       cout<<"Twc ="<<endl;
+                Global::PrintOpenGlMatrix(Twc);
+                Global::ExtractPoseComponents(Twc,&pos,&ori);
+
                 Eigen::Vector3f objP(0.0f, 0.0f, 0.0f);
                 Eigen::Matrix3f objO=Eigen::Matrix3f::Identity();
 

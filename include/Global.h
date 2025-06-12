@@ -13,8 +13,13 @@ namespace Global
     extern int frameWindowWidth;
     extern int frameWindowHeight;
 
+    
     void PrintOpenGlMatrix(const pangolin::OpenGlMatrix& mat) ;
     pangolin::OpenGlMatrix ToOpenGlMatrix(pangolin::OpenGlMatrix &M, const Eigen::Matrix3f &ori, const Eigen::Vector3f &pos);
+    void ExtractPoseComponents(const pangolin::OpenGlMatrix& pose,
+                           Eigen::Vector3f* position,
+                           Eigen::Matrix3f* orientation);
+                               
 }
 
 #endif

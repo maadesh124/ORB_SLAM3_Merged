@@ -130,7 +130,7 @@ void MapDrawer::DrawAnchors()
 
 void MapDrawer::DrawCubes()
 {
-    cout<<" no. of objects"<<mpAtlas->GetCurrentMap()->objects.size()<<endl;
+    //cout<<" no. of objects"<<mpAtlas->GetCurrentMap()->objects.size()<<endl;
         for(Object* object: mpAtlas->GetCurrentMap()->objects)
         {
         pangolin::OpenGlMatrix model;

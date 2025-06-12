@@ -36,4 +36,25 @@ namespace Global
         std::cout << std::endl;
     }
     }
+
+
+
+void ExtractPoseComponents(const pangolin::OpenGlMatrix& pose,
+                           Eigen::Vector3f* position,
+                           Eigen::Matrix3f* orientation)
+{
+    if(position)
+    {
+        *position = Eigen::Vector3f(pose.m[12], pose.m[13], pose.m[14]);
+    }
+
+    if(orientation)
+    {
+        *orientation << pose.m[0], pose.m[4], pose.m[8],
+                        pose.m[1], pose.m[5], pose.m[9],
+                        pose.m[2], pose.m[6], pose.m[10];
+    }
+}
+
+
 }
