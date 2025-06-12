@@ -27,7 +27,6 @@ class Object {
         ar & scaleFactor;
         ar & pose;
         ar & anchor_id;
-        ar & map;
     }
 
 public:
