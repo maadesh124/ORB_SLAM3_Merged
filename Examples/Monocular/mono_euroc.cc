@@ -152,6 +152,8 @@ int main(int argc, char **argv)
     // SLAM.SaveAtlas(1,"vi");
     SLAM.Shutdown();
 
+    
+
     // Save camera trajectory
     if (bFileName)
     {
