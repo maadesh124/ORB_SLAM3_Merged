@@ -54,6 +54,7 @@ class Map
     void serialize(Archive &ar, const unsigned int version)
     {
         ar & anchorPoseBackup;
+        ar & objects;
         ar & mnId;
         ar & mnInitKFid;
         ar & mnMaxKFid;

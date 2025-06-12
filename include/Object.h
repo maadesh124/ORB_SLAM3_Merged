@@ -6,6 +6,8 @@
 #include <vector>
 #include <string>
 #include "Anchor.h"
+#include <boost/serialization/vector.hpp>
+
 
 
 
@@ -16,6 +18,18 @@ class Map;
 class Anchor;
 // Object class: loads and renders a mesh from OBJ
 class Object {
+
+    friend class boost::serialization::access;
+
+    template<class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & scaleFactor;
+        ar & pose;
+        ar & anchor_id;
+        ar & map;
+    }
+
 public:
     Object();
 
@@ -24,8 +38,16 @@ public:
     size_t objectId;
     Eigen::Vector3f pos;//relative position of obj with respect to anchor
     Eigen::Matrix3f ori;//relative orientation of obj with respect to anchor
+    size_t anchor_id;
+
+
+    vector<float> pose;
     float scaleFactor=1.0;
+
     
+    void PreSave();
+    void PostLoad();
+
     // Load mesh from OBJ file
     bool LoadFromObj(const std::string& filename);
 

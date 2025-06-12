@@ -565,6 +565,13 @@ void Map::PreSave(std::set<GeometricCamera*> &spCams)
     }
 
 
+    objectPoseBackup.clear();
+    for(Object* object:objects)
+    {
+        object->PreSave();
+    }
+
+
 
 
     //end
@@ -689,6 +696,15 @@ void Map::PostLoad(KeyFrameDatabase* pKFDB, ORBVocabulary* pORBVoc, map<long uns
     }
 
 
+    for(size_t i=0;i<objects.size();i++)
+    {
+        Object* object=objects.at(i);
+        object->PostLoad();
+        object->anchor=anchors.at(object->anchor_id);
+        object->map=this;
+        object->objectId=i;
+
+    }
 
 
 }

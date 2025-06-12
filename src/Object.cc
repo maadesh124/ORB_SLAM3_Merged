@@ -1,4 +1,5 @@
 #include "Object.h"
+#include "Global.h"
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "components/tinyobj/include/tinyobj/tiny_obj_loader.h"
 
@@ -13,6 +14,26 @@ namespace ORB_SLAM3
 
 
 Object::Object() : index_count(0) {}
+
+
+void Object::PreSave()
+{
+    pangolin::OpenGlMatrix temp;
+    Global::ToOpenGlMatrix(temp,ori,pos);
+    pose=Global::OpenGlMatrixToVectorFloat(temp);
+    anchor_id=anchor->anchorId;
+}
+
+void Object::PostLoad()
+{
+    pangolin::OpenGlMatrix temp=Global::VectorFloatToOpenGlMatrix(pose);
+    Eigen::Vector3f pos;
+    Eigen::Matrix3f ori;
+    Global::ExtractPoseComponents(temp,&pos,&ori);
+    this->pos=pos;
+    this->ori=ori;
+}
+
 
 bool Object::LoadFromObj(const std::string& filename) {
     tinyobj::attrib_t attrib;
