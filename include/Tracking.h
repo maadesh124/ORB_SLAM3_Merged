@@ -61,8 +61,7 @@ public:
              KeyFrameDatabase* pKFDB, const string &strSettingPath, const int sensor, const string &_nameSeq=std::string());
 
     ~Tracking();
-    
-    float GetImageScale();
+
     // Parse the config file
     bool ParseCamParamFile(cv::FileStorage &fSettings);
     bool ParseORBParamFile(cv::FileStorage &fSettings);
@@ -143,8 +142,7 @@ public:
     // frames with estimated pose
     int mTrackedFr;
     bool mbStep;
-    float mImageScale;
-
+    float GetImageScale();
     // True if local mapping is deactivated and we are performing only localization
     bool mbOnlyTracking;
 

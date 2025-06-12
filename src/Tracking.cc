@@ -155,6 +155,12 @@ double calcAverage(vector<int> v_values)
     return accum / total;
 }
 
+float Tracking::GetImageScale()
+{
+return 1.0f;
+
+}
+
 double calcDeviation(vector<int> v_values, double average)
 {
     double accum = 0;
@@ -197,7 +203,6 @@ void Tracking::LocalMapStats2File()
 
     f.close();
 }
-
 
 void Tracking::TrackStats2File()
 {
@@ -1026,11 +1031,6 @@ bool Tracking::ParseCamParamFile(cv::FileStorage &fSettings)
     }
 
     return true;
-}
-
-float Tracking::GetImageScale()
-{
-    return 1.0f;
 }
 
 bool Tracking::ParseORBParamFile(cv::FileStorage &fSettings)

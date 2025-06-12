@@ -20,11 +20,10 @@
 #ifndef MAP_H
 #define MAP_H
 
-
-#include "Anchor.h"
-#include "Object.h"
 #include "MapPoint.h"
 #include "KeyFrame.h"
+#include "Anchor.h"
+#include "Object.h"
 
 #include <set>
 #include <pangolin/pangolin.h>
@@ -87,13 +86,12 @@ public:
     Map(int initKFid);
     ~Map();
 
-
-        std::vector<Anchor*> anchors;
+    std::vector<Anchor*> anchors;
         Anchor* createAnchor(Eigen::Vector3f* pos,Eigen::Matrix3f* orientation);
 	    std::vector<MapPoint*> selectReferences(Eigen::Vector3f* pos);
         std::vector<Object*> objects;
         Object* createObject(Eigen::Vector3f* pos,Eigen::Matrix3f* orientation,Anchor *anchor,std::string filepath,float scaleFactor);
-   
+
     void AddKeyFrame(KeyFrame* pKF);
     void AddMapPoint(MapPoint* pMP);
     void EraseMapPoint(MapPoint* pMP);

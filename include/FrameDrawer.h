@@ -25,6 +25,7 @@
 #include "Atlas.h"
 #include "Global.h"
 #include "shaders.h"
+
 #include<opencv2/core/core.hpp>
 #include<opencv2/features2d/features2d.hpp>
 
@@ -42,7 +43,7 @@ class FrameDrawer
 {
 public:
     FrameDrawer(Atlas* pAtlas);
-    ~FrameDrawer();
+     ~FrameDrawer();
 
     pangolin::OpenGlRenderState s_cam;
     pangolin::Handler3D* handler=nullptr;
@@ -60,7 +61,6 @@ public:
     cv::Mat ConvertToRGB(const cv::Mat& im);
     void DrawObjects( );
     void DrawImageAndObjects(float scale);
-
 
     // Update info from the last processed frame.
     void Update(Tracking *pTracker);

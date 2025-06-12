@@ -20,6 +20,9 @@
 #include "MapDrawer.h"
 #include "MapPoint.h"
 #include "KeyFrame.h"
+
+#include "Object.h"
+#include "Global.h"
 #include <pangolin/pangolin.h>
 #include <mutex>
 
@@ -46,6 +49,42 @@ MapDrawer::MapDrawer(Atlas* pAtlas, const string &strSettingPath):mpAtlas(pAtlas
         }
     }
 }
+
+void MapDrawer::DrawReferenceAxes()
+    {
+
+
+        glPushMatrix();
+
+        // Draw X axis (Red)
+        glLineWidth(3.0f); 
+        glColor3f(1.0, 0.0, 0.0); // Red
+        glBegin(GL_LINES);
+        glVertex3f(0.0, 0.0, 0.0); // Origin
+        glVertex3f(1.0, 0.0, 0.0); // X axis end
+        glEnd();
+
+        // Draw Y axis (Green)
+        glLineWidth(3.0f); 
+        glColor3f(0.0, 1.0, 0.0); // Green
+        glBegin(GL_LINES);
+        glVertex3f(0.0, 0.0, 0.0); // Origin
+        glVertex3f(0.0, 1.0, 0.0); // Y axis end
+        glEnd();
+
+        // Draw Z axis (Blue)
+        glLineWidth(3.0f); 
+        glColor3f(0.0, 0.0, 1.0); // Blue
+        glBegin(GL_LINES);
+        glVertex3f(0.0, 0.0, 0.0); // Origin
+        glVertex3f(0.0, 0.0, 1.0); // Z axis end
+        glEnd();
+
+        glPopMatrix();
+
+          // Set flag to indicate axes have been drawn
+    }
+
 
 
 void MapDrawer::DrawAnchors()
@@ -123,43 +162,6 @@ void MapDrawer::DrawObjects( pangolin::GlSlProgram& shader ,pangolin::OpenGlMatr
 }
 
 
-
-
-
-    void MapDrawer::DrawReferenceAxes()
-    {
-
-
-        glPushMatrix();
-
-        // Draw X axis (Red)
-        glLineWidth(3.0f); 
-        glColor3f(1.0, 0.0, 0.0); // Red
-        glBegin(GL_LINES);
-        glVertex3f(0.0, 0.0, 0.0); // Origin
-        glVertex3f(1.0, 0.0, 0.0); // X axis end
-        glEnd();
-
-        // Draw Y axis (Green)
-        glLineWidth(3.0f); 
-        glColor3f(0.0, 1.0, 0.0); // Green
-        glBegin(GL_LINES);
-        glVertex3f(0.0, 0.0, 0.0); // Origin
-        glVertex3f(0.0, 1.0, 0.0); // Y axis end
-        glEnd();
-
-        // Draw Z axis (Blue)
-        glLineWidth(3.0f); 
-        glColor3f(0.0, 0.0, 1.0); // Blue
-        glBegin(GL_LINES);
-        glVertex3f(0.0, 0.0, 0.0); // Origin
-        glVertex3f(0.0, 0.0, 1.0); // Z axis end
-        glEnd();
-
-        glPopMatrix();
-
-          // Set flag to indicate axes have been drawn
-    }
 
 bool MapDrawer::ParseViewerParamFile(cv::FileStorage &fSettings)
 {
@@ -288,6 +290,9 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
             KeyFrame* pKF = vpKFs[i];
             cv::Mat Twc = pKF->GetPoseInverse().t();
             unsigned int index_color = pKF->mnOriginMapId;
+
+            if (index_color > 5)
+                index_color = 0;
 
             glPushMatrix();
 
@@ -420,6 +425,9 @@ void MapDrawer::DrawKeyFrames(const bool bDrawKF, const bool bDrawGraph, const b
                 KeyFrame* pKF = vpKFs[i];
                 cv::Mat Twc = pKF->GetPoseInverse().t();
                 unsigned int index_color = pKF->mnOriginMapId;
+
+                if (index_color > 5)
+                    index_color = 0;
 
                 glPushMatrix();
 

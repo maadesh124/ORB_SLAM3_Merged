@@ -18,17 +18,16 @@
 
 
 #include "Viewer.h"
-#include <pangolin/pangolin.h>
 #include "shaders.h"
 #include "Object.h"
+#include <pangolin/pangolin.h>
+
 #include <mutex>
 
 namespace ORB_SLAM3
 {
 
-
 class Object;
-
 
 Viewer::Viewer(System* pSystem, FrameDrawer *pFrameDrawer, MapDrawer *pMapDrawer, Tracking *pTracking, const string &strSettingPath):
     both(false), mpSystem(pSystem), mpFrameDrawer(pFrameDrawer),mpMapDrawer(pMapDrawer), mpTracker(pTracking),
@@ -137,13 +136,12 @@ void Viewer::Run()
     mbFinished = false;
     mbStopped = false;
 
-
     pangolin::CreateWindowAndBind(Global::mapWindow,1024,768);
-    // 3D Mouse handler requires depth testing to be enabled
     glEnable(GL_DEPTH_TEST);
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glClearColor(0.6f, 1.0f, 0.6f, 1.0f);
+    glClearColor(0.0f, 1.0f, 0.6f, 1.0f);
+
 
     pangolin::CreatePanel("menu").SetBounds(0.0,1.0,0.0,pangolin::Attach::Pix(175));
     pangolin::Var<bool> menuFollowCamera("menu.Follow Camera",true,true);
@@ -155,8 +153,10 @@ void Viewer::Run()
     pangolin::Var<bool> menuShowInertialGraph("menu.Show Inertial Graph",true,true);
     pangolin::Var<bool> menuLocalizationMode("menu.Localization Mode",false,true);
     pangolin::Var<bool> menuReset("menu.Reset",false,false);
-    pangolin::Var<bool> menuShowCube("menu.Show Cube", false, false);
+
+        pangolin::Var<bool> menuShowCube("menu.Show Cube", false, false);
     bool prevShowCube = menuShowCube;
+
 
     // Define Camera Render Object (for view / scene browsing)
     pangolin::OpenGlRenderState s_cam(
@@ -168,14 +168,12 @@ void Viewer::Run()
     pangolin::View& d_cam = pangolin::CreateDisplay()
             .SetBounds(0.0, 1.0, pangolin::Attach::Pix(175), 1.0, -1024.0f/768.0f)
             .SetHandler(new pangolin::Handler3D(s_cam));
+    
 
-
-
-    pangolin::GlSlProgram shader;
+                pangolin::GlSlProgram shader;
     shader.AddShader(pangolin::GlSlVertexShader, vertex_shader);
     shader.AddShader(pangolin::GlSlFragmentShader, fragment_shader);
     shader.Link();
-
 
 
     pangolin::OpenGlMatrix Twc, Twr;
@@ -185,12 +183,6 @@ void Viewer::Run()
     pangolin::OpenGlMatrix Twwp; // Oriented with g in the z axis, but y and x from camera
     Twwp.SetIdentity();
     cv::namedWindow("ORB-SLAM3: Current Frame");
-
-
-
-
-
-
 
     bool bFollow = true;
     bool bLocalizationMode = false;
@@ -202,7 +194,6 @@ void Viewer::Run()
         menuShowGraph = true;
     }
 
-    float trackedImageScale = mpTracker->GetImageScale();
     while(1)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -285,24 +276,28 @@ void Viewer::Run()
         }
         prevShowCube=menuShowCube;
 
-
-
         d_cam.Activate(s_cam);
-        glClearColor(0.0f,1.0f,1.0f,1.0f);
+        glClearColor(1.0f,1.0f,1.0f,1.0f);
         mpMapDrawer->DrawCurrentCamera(Twc);
         if(menuShowKeyFrames || menuShowGraph || menuShowInertialGraph)
             mpMapDrawer->DrawKeyFrames(menuShowKeyFrames,menuShowGraph, menuShowInertialGraph);
         if(menuShowPoints)
             mpMapDrawer->DrawMapPoints();
-        mpMapDrawer->DrawReferenceAxes();
+
+            glClearColor(0.0f, 1.0f, 0.6f, 1.0f);
+            mpMapDrawer->DrawReferenceAxes();
         //Extended
         mpMapDrawer->DrawAnchors();
         mpMapDrawer->DrawObjects(shader,s_cam.GetModelViewMatrix(),s_cam.GetProjectionMatrix());
 
-        //End
+        //end
+
         pangolin::FinishFrame();
 
+         //Extended
         //mpFrameDrawer->DrawImageAndObjects(trackedImageScale);
+        //end
+        //std::cout<<" toShow size="<<toShow.cols<<" "<<toShow.rows<<std::endl;
         cv::Mat toShow;
         cv::Mat im = mpFrameDrawer->DrawFrame(true);
 
@@ -314,7 +309,6 @@ void Viewer::Run()
             toShow = im;
         }
 
-        //cout<<"rows=%d cols=%d"<<toShow.rows<<toShow.cols<<endl;
         cv::imshow("ORB-SLAM3: Current Frame",toShow);
         cv::waitKey(mT);
 

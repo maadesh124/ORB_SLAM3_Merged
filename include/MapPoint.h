@@ -138,6 +138,7 @@ public:
     void SetWorldPos(const cv::Mat &Pos);
 
     cv::Mat GetWorldPos();
+
     Eigen::Vector3f GetWorldPosEigen();
 
     cv::Mat GetNormal();

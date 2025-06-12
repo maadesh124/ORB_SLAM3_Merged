@@ -24,30 +24,9 @@
 
 #include<mutex>
 
-
-using namespace std;
 namespace ORB_SLAM3
 {
-
-Object* ob;
-
-FrameDrawer::FrameDrawer(Atlas* pAtlas):both(false),mpAtlas(pAtlas)
-
-{
-
-
-    initialized=false;
-
-    mState=Tracking::SYSTEM_NOT_READY;
-
-    mIm = cv::Mat(600,350,CV_8UC3, cv::Scalar(0,0,0));
-
-    mImRight = cv::Mat(600,350,CV_8UC3, cv::Scalar(0,0,0));
-
-
-    
-
-}
+ Object* ob;
 
 void PrintOpenGlMatrix(const pangolin::OpenGlMatrix& mat) {
     std::cout << "OpenGlMatrix:" << std::endl;
@@ -58,6 +37,23 @@ void PrintOpenGlMatrix(const pangolin::OpenGlMatrix& mat) {
         std::cout << std::endl;
     }
 }
+
+FrameDrawer::FrameDrawer(Atlas* pAtlas):both(false),mpAtlas(pAtlas)
+{
+    initialized=false;
+    mState=Tracking::SYSTEM_NOT_READY;
+    mIm = cv::Mat(480,640,CV_8UC3, cv::Scalar(0,0,0));
+    mImRight = cv::Mat(480,640,CV_8UC3, cv::Scalar(0,0,0));
+    
+}
+
+FrameDrawer::~FrameDrawer()
+{
+delete handler;
+handler = nullptr;
+    std::cout << "FrameDrawer destroyed" << std::endl;
+}
+
 
 
 pangolin::OpenGlMatrix FrameDrawer::GetCurrentViewMatrix()
@@ -97,7 +93,6 @@ pangolin::OpenGlMatrix P=pangolin::ProjectionMatrix(
     return P;
 }
 
-
 void FrameDrawer::initializeWindow(int w,int h)
 {
     std::cout<<w<<" win s"<<h<<std::endl;
@@ -132,14 +127,15 @@ void FrameDrawer::initializeWindow(int w,int h)
                 Eigen::Vector3f objP(0.0f, 0.0f, 0.0f);
                 Eigen::Matrix3f objO=Eigen::Matrix3f::Identity();
 
-             Anchor* te= mpAtlas->GetCurrentMap()->createAnchor(&pos,&ori);
-             cout<<"mp id in creation"<<mpAtlas->GetCurrentMap()->GetId()<<endl;
-              std::string path = "/home/samsung/Dev/Test/build/models/model.obj";
-            ob = mpAtlas->GetCurrentMap()->createObject(&objP,&objO,te,path,0.005f);
+            //  Anchor* te= mpAtlas->GetCurrentMap()->createAnchor(&pos,&ori);
+            //  cout<<"mp id in creation"<<mpAtlas->GetCurrentMap()->GetId()<<endl;
+            //   std::string path = "/home/samsung/Dev/Test/build/models/model.obj";
+            // ob = mpAtlas->GetCurrentMap()->createObject(&objP,&objO,te,path,0.005f);
     //pangolin::BindToContext(Global::mapWindow);
     initialized=true;
 
 }
+
 
 cv::Mat FrameDrawer::ConvertToRGB(const cv::Mat& im) {
     if(im.channels() == 3) {
@@ -153,6 +149,7 @@ cv::Mat FrameDrawer::ConvertToRGB(const cv::Mat& im) {
     }
     return im.clone();
 }
+
 
 
 void FrameDrawer::DrawObjects()
@@ -206,7 +203,6 @@ void FrameDrawer::DrawObjects()
    //  shaderF.Unbind();
 }
 
-
 void FrameDrawer::DrawImageAndObjects(float scale)
 {
     
@@ -234,8 +230,6 @@ void FrameDrawer::DrawImageAndObjects(float scale)
     pangolin::FinishFrame();
     pangolin::BindToContext(Global::mapWindow);
 }
-
-
 
 cv::Mat FrameDrawer::DrawFrame(bool bOldFeatures)
 {
@@ -602,13 +596,6 @@ void FrameDrawer::Update(Tracking *pTracker)
 
     }
     mState=static_cast<int>(pTracker->mLastProcessedState);
-}
-
-FrameDrawer::~FrameDrawer()
-{
-delete handler;
-handler = nullptr;
-    std::cout << "FrameDrawer destroyed" << std::endl;
 }
 
 } //namespace ORB_SLAM
