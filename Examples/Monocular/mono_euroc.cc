@@ -149,7 +149,7 @@ int main(int argc, char **argv)
     }
     //Stop all threads
 
-    //SLAM.SaveAtlas(1,"visnusession1");
+    // SLAM.SaveAtlas(1,"vi");
     SLAM.Shutdown();
 
     // Save camera trajectory

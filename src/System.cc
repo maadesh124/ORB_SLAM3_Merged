@@ -757,6 +757,94 @@ bool System::isLost()
 }
 
 
+void System::SaveAtlas(int type, string saveFileName){
+    //cout << endl << "Enter the name of the file if you want to save the current Atlas session. To exit press ENTER: ";
+    //string saveFileName;
+    //getline(cin,saveFileName);
+    if(!saveFileName.empty())
+    {
+        // Save the current session
+        mpAtlas->PreSave();
+        mpKeyFrameDatabase->PreSave();
+
+        string pathSaveFileName = "./";
+        pathSaveFileName = pathSaveFileName.append(saveFileName);
+        pathSaveFileName = pathSaveFileName.append(".osa");
+
+        if(type == TEXT_FILE) // File text
+        {
+            cout << "Starting to write the save text file " << endl;
+            std::remove(pathSaveFileName.c_str());
+            std::ofstream ofs(pathSaveFileName, std::ios::binary);
+            boost::archive::text_oarchive oa(ofs);
+
+            oa << mpAtlas;
+            oa << mpKeyFrameDatabase;
+            cout << "End to write the save text file" << endl;
+        }
+        else if(type == BINARY_FILE) // File binary
+        {
+            cout << "Starting to write the save binary file" << endl;
+            std::remove(pathSaveFileName.c_str());
+            std::ofstream ofs(pathSaveFileName, std::ios::binary);
+            boost::archive::binary_oarchive oa(ofs);
+
+            oa << mpAtlas;
+            oa << mpKeyFrameDatabase;
+            cout << "End to write save binary file" << endl;
+        }
+
+    }
+}
+
+
+bool System::LoadAtlas(string filename, int type)
+{
+    bool isRead = false;
+
+    if(type == TEXT_FILE)
+    {
+        cout << "Starting to read the save text file " << endl;
+        std::ifstream ifs(filename, std::ios::binary);
+        if(!ifs.good())
+        {
+            cout << "Load file not found" << endl;
+            return false;
+        }
+        boost::archive::text_iarchive ia(ifs);
+        
+        ia >> mpAtlas;
+        ia >> mpKeyFrameDatabase;
+        cout << "End to load the save text file " << endl;
+        isRead = true;
+    }
+    else if(type == BINARY_FILE) // File binary
+    {
+        cout << "Starting to read the save binary file"  << endl;
+        std::ifstream ifs(filename, std::ios::binary);
+        if(!ifs.good())
+        {
+            cout << "Load file not found" << endl;
+            return false;
+        }
+        boost::archive::binary_iarchive ia(ifs);
+        
+        ia >> mpAtlas;
+        ia >> mpKeyFrameDatabase;
+        cout << "End to load the save binary file" << endl;
+        isRead = true;
+    }
+
+    
+    if(isRead)
+    {
+        return true;
+    }
+    
+    return false;
+}
+
+
 bool System::isFinished()
 {
     return (GetTimeFromIMUInit()>0.1);
