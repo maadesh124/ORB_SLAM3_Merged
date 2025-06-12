@@ -12,6 +12,9 @@ class Map;
 
 class Anchor{
 public:
+
+
+
 Map* map;
 std::vector<MapPoint*> refs;
 std::vector<Eigen::Vector3f> prevRefPos;//position of refs when previous frame was processed

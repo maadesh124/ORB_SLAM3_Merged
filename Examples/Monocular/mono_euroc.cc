@@ -22,7 +22,7 @@
 #include<algorithm>
 #include<fstream>
 #include<chrono>
-
+#include "Atlas.h"
 #include<opencv2/core/core.hpp>
 
 #include<System.h>
@@ -80,8 +80,10 @@ int main(int argc, char **argv)
   
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
-    //ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::MONOCULAR, true, 0,"LOADED SEQUENCE","visnusession1.osa");
-    ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::MONOCULAR, true);
+    ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::MONOCULAR, true, 0,"LOADED SEQUENCE","vi.osa");
+    //ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::MONOCULAR, true);
+
+ 
     
     
     for (seq = 0; seq<num_seq; seq++)
@@ -149,7 +151,7 @@ int main(int argc, char **argv)
     }
     //Stop all threads
 
-    // SLAM.SaveAtlas(1,"vi");
+     SLAM.SaveAtlas(1,"vi");
     SLAM.Shutdown();
 
     

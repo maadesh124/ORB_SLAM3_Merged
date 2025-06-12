@@ -17,6 +17,7 @@
 */
 
 
+#include "Global.h"
 #include "Map.h"
 
 #include<mutex>
@@ -552,6 +553,26 @@ void Map::SetLastMapChange(int currentChangeId)
 
 void Map::PreSave(std::set<GeometricCamera*> &spCams)
 {
+
+    //Ext
+    anchorPoseBackup.clear();
+    for(Anchor* anchor:anchors)
+    {
+        pangolin::OpenGlMatrix temp;
+        Global::ToOpenGlMatrix(temp,anchor->ori,anchor->pos);
+        vector<float> currentAnchorPose=Global::OpenGlMatrixToVectorFloat(temp);
+        anchorPoseBackup.push_back(currentAnchorPose);
+    }
+
+
+
+
+    //end
+
+
+
+
+
     int nMPWithoutObs = 0;
     for(MapPoint* pMPi : mspMapPoints)
     {
@@ -618,6 +639,7 @@ void Map::PostLoad(KeyFrameDatabase* pKFDB, ORBVocabulary* pORBVoc, map<long uns
     std::copy(mvpBackupMapPoints.begin(), mvpBackupMapPoints.end(), std::inserter(mspMapPoints, mspMapPoints.begin()));
     std::copy(mvpBackupKeyFrames.begin(), mvpBackupKeyFrames.end(), std::inserter(mspKeyFrames, mspKeyFrames.begin()));
     */
+   
 
     map<long unsigned int,MapPoint*> mpMapPointId;
     for(MapPoint* pMPi : mspMapPoints)
@@ -655,6 +677,20 @@ void Map::PostLoad(KeyFrameDatabase* pKFDB, ORBVocabulary* pORBVoc, map<long uns
     cout << "End to rebuild KeyFrame references" << endl;
 
     mvpBackupMapPoints.clear();
+
+    anchors.clear();
+    for(vector<float> currentAnchorPose:anchorPoseBackup)
+    {
+        pangolin::OpenGlMatrix openglPose= Global::VectorFloatToOpenGlMatrix(currentAnchorPose);
+        Eigen::Vector3f pos;
+        Eigen::Matrix3f ori;
+        Global::ExtractPoseComponents(openglPose,&pos,&ori);
+        this->createAnchor(&pos,&ori);
+    }
+
+
+
+
 }
 
 

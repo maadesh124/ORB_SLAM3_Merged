@@ -1,10 +1,13 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+
+#include <vector>
 #include <string>
 #include <pangolin/pangolin.h>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
+
 
 namespace Global
 {
@@ -19,6 +22,9 @@ namespace Global
     void ExtractPoseComponents(const pangolin::OpenGlMatrix& pose,
                            Eigen::Vector3f* position,
                            Eigen::Matrix3f* orientation);
+
+    pangolin::OpenGlMatrix VectorFloatToOpenGlMatrix(const std::vector<float>& vec) ;
+    std::vector<float> OpenGlMatrixToVectorFloat(const pangolin::OpenGlMatrix& mat) ;
                                
 }
 

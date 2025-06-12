@@ -56,5 +56,25 @@ void ExtractPoseComponents(const pangolin::OpenGlMatrix& pose,
     }
 }
 
+std::vector<float> OpenGlMatrixToVectorFloat(const pangolin::OpenGlMatrix& mat) {
+    std::vector<float> vec(16);
+    for (int i = 0; i < 16; ++i) {
+        vec[i] = mat.m[i];  // Preserve full float precision
+    }
+    return vec;
+}
+
+pangolin::OpenGlMatrix VectorFloatToOpenGlMatrix(const std::vector<float>& vec) {
+    pangolin::OpenGlMatrix mat;
+    if (vec.size() != 16) {
+        throw std::runtime_error("Vector must have 16 elements for 4x4 matrix.");
+    }
+    for (int i = 0; i < 16; ++i) {
+        mat.m[i] = vec[i];
+    }
+    return mat;
+}
+
+
 
 }

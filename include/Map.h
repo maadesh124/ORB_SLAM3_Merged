@@ -29,6 +29,7 @@
 #include <pangolin/pangolin.h>
 #include <mutex>
 
+#include <boost/serialization/vector.hpp>
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/set.hpp>
@@ -52,6 +53,7 @@ class Map
     template<class Archive>
     void serialize(Archive &ar, const unsigned int version)
     {
+        ar & anchorPoseBackup;
         ar & mnId;
         ar & mnInitKFid;
         ar & mnMaxKFid;
@@ -85,6 +87,9 @@ public:
     Map();
     Map(int initKFid);
     ~Map();
+    std::vector<std::vector<float>> anchorPoseBackup;
+    std::vector<std::vector<float>> objectPoseBackup;
+    std::vector<int> objectAnchorRelation;
 
     std::vector<Anchor*> anchors;
         Anchor* createAnchor(Eigen::Vector3f* pos,Eigen::Matrix3f* orientation);
