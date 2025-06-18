@@ -577,16 +577,24 @@ void Map::PreSave(std::set<GeometricCamera*> &spCams)
     //end
 
 
-
+    cout<<"object saving done"<<endl;
 
 
     int nMPWithoutObs = 0;
+    cout<<"total mappoints: "<<mspMapPoints.size()<<endl;
+    cout<<"total keyframes: "<<mspKeyFrames.size()<<endl;
+    int count=0;
     for(MapPoint* pMPi : mspMapPoints)
     {
+
+        
         if(pMPi->GetObservations().size() == 0)
         {
             nMPWithoutObs++;
+            continue;
+
         }
+       
         map<KeyFrame*, std::tuple<int,int>> mpObs = pMPi->GetObservations();
         for(map<KeyFrame*, std::tuple<int,int>>::iterator it= mpObs.begin(), end=mpObs.end(); it!=end; ++it)
         {
@@ -596,7 +604,13 @@ void Map::PreSave(std::set<GeometricCamera*> &spCams)
             }
 
         }
+        if(pMPi->GetObservations().size()==0)
+        break;
+
+        
+    
     }
+
     cout << "  Bad MapPoints removed" << endl;
 
     // Saves the id of KF origins
@@ -613,6 +627,7 @@ void Map::PreSave(std::set<GeometricCamera*> &spCams)
     {
         //cout << "Pre-save of mappoint " << pMPi->mnId << endl;
         //mvpBackupMapPoints.push_back(pMPi);
+
         pMPi->PreSave(mspKeyFrames,mspMapPoints);
     }
     cout << "  MapPoints back up done!!" << endl;
