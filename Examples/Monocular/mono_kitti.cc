@@ -22,9 +22,11 @@
 #include<chrono>
 #include<iomanip>
 
-#include<opencv2/core/core.hpp>
+#include <opencv2/core/core.hpp>
 
-#include"System.h"
+#include "System.h"
+
+#define COMPILEDWITHC11
 
 using namespace std;
 
