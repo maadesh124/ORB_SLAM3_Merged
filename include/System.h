@@ -100,6 +100,12 @@ public:
     // Initialize the SLAM system. It launches the Local Mapping, Loop Closing and Viewer threads.
     System(const string &strVocFile, const string &strSettingsFile, const eSensor sensor, const bool bUseViewer = true, const int initFr = 0, const string &strSequence = std::string(), const string &strLoadingFile = std::string());
 
+    // Initialize the SLAM system with interactive map loading option
+    System(const string &strVocFile, const string &strSettingsFile, const eSensor sensor, const bool bUseViewer, const int initFr, const string &strSequence, const bool bInteractiveMapLoading);
+
+    // Helper function to get user input for map loading
+    static string GetUserMapChoice();
+
     Atlas* getAtlas();
     // Proccess the given stereo frame. Images must be synchronized and rectified.
     // Input images: RGB (CV_8UC3) or grayscale (CV_8U). RGB is converted to grayscale.
@@ -185,6 +191,10 @@ public:
 private:
 
     bool LoadAtlas(string filename, int type);
+    
+    // Common initialization method
+    void InitializeSystem(const string &strVocFile, const string &strSettingsFile, const eSensor sensor,
+                         const bool bUseViewer, const int initFr, const string &strSequence, const string &strLoadingFile);
 
     // Input sensor
     eSensor mSensor;

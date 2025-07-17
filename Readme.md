@@ -32,7 +32,7 @@ git checkout 4.6.0
 mkdir build
 cd build
 cmake -D CMAKE_BUILD_TYPE=Release -D WITH_CUDA=OFF -D CMAKE_INSTALL_PREFIX=/usr/local ..
-make -j 1
+make
 sudo make install
 ```
 
@@ -92,14 +92,15 @@ unzip MH_01_easy.zip -d MH01/
 ```
 ### Download and Run VIT Dataset
 ```
-#Download
+# Download
 cd ~/Datasets
 wget --no-check-certificate \
      "https://drive.usercontent.google.com/download?id=1BEyUl_TtRHgjUZ_B2MTyC4ye4exnmJaR&confirm=t" \
      -O "VITDATA.zip"
 unzip VITDATA.zip -d VITDATA
 
-#Run
+# Run
+cd ~/Dev/ORB_SLAM3_Merged
 ./Examples/Monocular/mono_euroc  ./Vocabulary/ORBvoc.txt ~/Dev/ORB_SLAM3_Merged/Examples/Monocular/vitcam.yaml ~/Datasets/VITDATA ~/Datasets/VITDATA/mav0/cam0/timestamps.txt dataset-MH01_monoi
 ```
 
@@ -120,6 +121,7 @@ python3 parameters.py ./sample_data
 ./Examples/Monocular/mono_euroc  ./Vocabulary/ORBvoc.txt ~/Dev/ORB_SLAM3_Merged/Examples/Monocular/vitcam.yaml ~/Datasets/c1 ~/Datasets/c1/mav0/cam0/timestamps.txt dataset-MH01_monoi
 
 ```
+
 
 
 

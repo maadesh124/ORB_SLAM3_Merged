@@ -81,9 +81,10 @@ int main(int argc, char **argv)
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
    //ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::MONOCULAR, true, 0,"LOADED SEQUENCE","vi.osa");
-   ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::MONOCULAR, true);
+   //ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::MONOCULAR, true);
 
- 
+   // Interactive map loading - user can choose between new map or load existing map
+   ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::MONOCULAR, true, 0, "EUROC_SEQUENCE", true);
     
     
     for (seq = 0; seq<num_seq; seq++)

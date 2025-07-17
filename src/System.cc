@@ -43,6 +43,30 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     mSensor(sensor), mpViewer(static_cast<Viewer*>(NULL)), mbReset(false), mbResetActiveMap(false),
     mbActivateLocalizationMode(false), mbDeactivateLocalizationMode(false)
 {
+    InitializeSystem(strVocFile, strSettingsFile, sensor, bUseViewer, initFr, strSequence, strLoadingFile);
+}
+
+// New constructor with interactive map loading
+System::System(const string &strVocFile, const string &strSettingsFile, const eSensor sensor,
+               const bool bUseViewer, const int initFr, const string &strSequence, const bool bInteractiveMapLoading):
+    mSensor(sensor), mpViewer(static_cast<Viewer*>(NULL)), mbReset(false), mbResetActiveMap(false),
+    mbActivateLocalizationMode(false), mbDeactivateLocalizationMode(false)
+{
+    string strLoadingFile = "";
+    
+    if(bInteractiveMapLoading)
+    {
+        strLoadingFile = GetUserMapChoice();
+    }
+    
+    // Initialize the system with the determined loading file
+    InitializeSystem(strVocFile, strSettingsFile, sensor, bUseViewer, initFr, strSequence, strLoadingFile);
+}
+
+// Common initialization method
+void System::InitializeSystem(const string &strVocFile, const string &strSettingsFile, const eSensor sensor,
+                             const bool bUseViewer, const int initFr, const string &strSequence, const string &strLoadingFile)
+{
     // Output welcome message
     cout << endl <<
     "ORB-SLAM3 Copyright (C) 2017-2020 Carlos Campos, Richard Elvira, Juan J. Gómez, José M.M. Montiel and Juan D. Tardós, University of Zaragoza." << endl <<
@@ -182,7 +206,45 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
 
     // Fix verbosity
     Verbose::SetTh(Verbose::VERBOSITY_QUIET);
+}
 
+// Helper function to get user input for map loading
+string System::GetUserMapChoice()
+{
+    string choice;
+    string mapFile = "";
+    
+    cout << "\n=== ORB-SLAM3 Map Loading Options ===" << endl;
+    cout << "1. Create new map" << endl;
+    cout << "2. Load existing map" << endl;
+    cout << "Enter your choice (1 or 2): ";
+    
+    getline(cin, choice);
+    
+    if(choice == "2")
+    {
+        cout << "Enter the path to the saved atlas file (.osa): ";
+        getline(cin, mapFile);
+        
+        // Check if file exists
+        ifstream file(mapFile);
+        if(!file.good())
+        {
+            cout << "Warning: File '" << mapFile << "' not found. Creating new atlas instead." << endl;
+            mapFile = "";
+        }
+        else
+        {
+            cout << "Loading map from: " << mapFile << endl;
+        }
+        file.close();
+    }
+    else
+    {
+        cout << "Creating new map..." << endl;
+    }
+    
+    return mapFile;
 }
 
 
